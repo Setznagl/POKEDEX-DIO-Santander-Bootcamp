@@ -13,6 +13,7 @@ var offset_inicial = 0;
 // Exemplo de requisição de API via FETCH API JS
 var offset = 0; 
 var limit = listaTela(largura , altura);
+
 const pokemonOL = document.getElementById('pokemonList');
 function convertPokemonToHTML(pokemonRecebido){
     return `
