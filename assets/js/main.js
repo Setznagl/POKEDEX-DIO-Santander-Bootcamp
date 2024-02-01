@@ -46,7 +46,12 @@ function convertPokemonToHTML(pokemonRecebido){
         pokeAPI.getPokemons( (referencial - 1) , 1 ).then((resultsArray = []) => { 
             response = resultsArray.map((convertPokemonToHTML)).join('');
             pokemonOL.innerHTML -= listaDeRetorno; //Remover toda a lista que a API gera e deixar somente o item clicado
-            pokemonOL.innerHTML += response; 
+            pokemonOL.innerHTML += response;
+            /*correcao_bug_06: 
+                Ao remover a lista gerada em caso de select de um único pokemon 
+                gera item filho como primeiro item da lista com corpo de texto "NAN 06";*/
+            var correcao_bug_06 = pokemonOL.firstChild;
+            pokemonOL.removeChild(correcao_bug_06);
         })};
 
     ////////////*Paginacao*/////////////
