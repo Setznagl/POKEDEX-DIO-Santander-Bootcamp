@@ -1,5 +1,7 @@
 console.log("Loading! pré API");
 
+console.log("Iniciando refatoração do código 01/02/2024")
+
 //recebendo largura e altura da tela
 $ = document.querySelector.bind(document); 
 $$ = document.querySelectorAll.bind(document); 
