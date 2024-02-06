@@ -1,5 +1,7 @@
 console.log("Loading! pré API");
 
+console.log("Iniciando refatoração do código 01/02/2024 ")
+
 //recebendo largura e altura da tela
 $ = document.querySelector.bind(document); 
 $$ = document.querySelectorAll.bind(document); 
@@ -17,7 +19,8 @@ var limit = listaTela(largura , altura);
 const pokemonOL = document.getElementById('pokemonList');
 function convertPokemonToHTML(pokemonRecebido){
     return `
-    <button id="button_${pokemonRecebido.number}" onclick="">
+    <button id="button_${pokemonRecebido.number}" onclick="requisicaoDetalhada(${pokemonRecebido.number})">
+
         <li class="pokemonListItem background__${pokemonRecebido.type}">
                 <span class="pokemonListItem__number">${distribuiNumber(pokemonRecebido.number)}</span>
                 <span class="pokemonListItem__name">${pokemonRecebido.name}</span>
@@ -40,6 +43,20 @@ function convertPokemonToHTML(pokemonRecebido){
         pokemonOL.innerHTML += listaDeRetorno; 
 
     });
+
+    // realizado a inclusao de uma função no onclick que faz uma requisição nova detalhada e remove a lista antiga
+    function requisicaoDetalhada(referencial){
+        pokeAPI.getPokemons( (referencial - 1) , 1 ).then((resultsArray = []) => { 
+            response = resultsArray.map((convertPokemonToHTML)).join('');
+            pokemonOL.innerHTML -= listaDeRetorno; //Remover toda a lista que a API gera e deixar somente o item clicado
+            pokemonOL.innerHTML += response;
+            /*correcao_bug_06: 
+                Ao remover a lista gerada em caso de select de um único pokemon 
+                gera item filho como primeiro item da lista com corpo de texto "NAN 06";*/
+            var correcao_bug_06 = pokemonOL.firstChild;
+            pokemonOL.removeChild(correcao_bug_06);
+        })};
+
     ////////////*Paginacao*/////////////
     const buttonPrv = document.getElementById('pagination-prv');
     const buttonNxt = document.getElementById('pagination-nxt');
@@ -79,48 +96,4 @@ function convertPokemonToHTML(pokemonRecebido){
         .then((resultsArray = []) => {
         listaDeRetorno = resultsArray.map((convertPokemonToHTML)).join('');
         pokemonOL.innerHTML = listaDeRetorno;})}
-} 
- //////////////////////////////////// 
-
-
-/*////////////////////////////////////////////////////////////////////////////
-
-// Vanila POKEAPI
-console.log("Loading! pré API");
-
-//recebendo largura e altura da tela
-$ = document.querySelector.bind(document); 
-$$ = document.querySelectorAll.bind(document); 
-    let elemento = "#content_id"
-    let largura = $(elemento).clientWidth;
-    let altura = $(elemento).clientHeight;
-console.log(largura,altura);
-
-// Exemplo de requisição de API via FETCH API JS
-const offset = 0;
-const limit = listaTela(largura , altura);
-const pokemonOL = document.getElementById('pokemonList');
-
-function convertPokemonToHTML(pokemonRecebido){
-    return `
-    <li class="pokemonListItem background__${pokemonRecebido.types[0].type.name}">
-            <span class="pokemonListItem__number">${distribuiNumber(pokemonRecebido.id)}</span>
-            <span class="pokemonListItem__name">${pokemonRecebido.name}</responseArray[0]v class="pokemonListItem__detailContainer">
-
-        <div class="pokemonListItem__detailContainer">
-            <ol class="detailContainer__types">
-                <li class="type-proprieties ${pokemonRecebido.types[0].type.name}">${pokemonRecebido.types[0].type.name}</li>
-                <li class="type-proprieties ${manipularlistaTipos(pokemonRecebido.types)}">${manipularlistaTipos(pokemonRecebido.types)}</li>
-            </ol>
-
-        <!--<img class="pokemonListItem__Image" src="${pokemonRecebido.sprites.other.dream_world.front_default}" alt="${pokemonRecebido.name}"> -->
-            <img class="pokemonListItem__Image" src="${pokemonRecebido.sprites.other['official-artwork'].front_default}" alt="${pokemonRecebido.name}"> 
-
-        </div>
-    </li>`
-}
-
-    pokeAPI.getPokemons( offset , limit ).then((resultsArray = []) => { 
-        pokemonOL.innerHTML += resultsArray.map((convertPokemonToHTML)).join('');
-    });
-    ////////////////////////////////////////////////////////////////////////////*/ 
+};
