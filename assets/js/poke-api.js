@@ -1,3 +1,4 @@
+//inicialização da classe
 const pokeAPI = {};
 
 function convertPokeApiDetail_to_model (pokeDetail){
@@ -28,28 +29,6 @@ pokeAPI.getPokemons = (offset = 0, limit) => {
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         .catch((error) =>console.error(error))
         .finally(() => { console.log("Loading! response received")});
-};
+    };
 
-function distribuiNumber (id){
-    if (id < 10) { pokemonNumber = `#00${id}`;} 
-    else if (id >= 10 && id <= 100) {pokemonNumber = `#0${id}`;} 
-    else {pokemonNumber = `#${id}`;}
-    return pokemonNumber; }
 
-function manipularlistaTipos (types){
-   switch (types.length) {
-       case 1:
-           return "vazio"
-       case 2:
-           return types[1].type.name; }}   
-
-function listaTela(largura , altura){
-   prop = largura / altura;
-   console.log(prop);
-   if (prop <= 0.9){
-       return 4;}
-   else if (prop > 0.9 && prop <= 2.8 && largura >= 576){
-       return 9;}
-   else if (prop > 2.8 && largura > 900){
-       return 16;}
-   else return 6}
